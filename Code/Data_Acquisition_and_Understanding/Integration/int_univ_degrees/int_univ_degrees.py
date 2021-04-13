@@ -16,6 +16,8 @@ pr_univ_degrees = ""
 pr_prev_education = ""
 dni = ""
 model = ""
+pr_langs_certs = ""
+pr_training_courses = ""
 
 
 def repair_overlaps(ffin_estudios, contract):
@@ -137,15 +139,25 @@ def get_eb(persona):
 
 
 def main():
-    global work_history_dni, pr_work_history, pr_univ_degrees, pr_prev_education
+    global work_history_dni, pr_work_history, pr_univ_degrees, pr_prev_education, pr_langs_certs, pr_training_courses
 
     pr_univ_degrees = pd.read_csv(
-        '../../../Data/Processed/pr_univ_degrees.csv',
+        '../../../../Data/Processed/pr_univ_degrees.csv',
         sep=apitep_core.CSV_SEPARATOR,
         header=0, index_col=0)
 
     pr_prev_education = pd.read_csv(
-        '../../../Data/Processed/pr_prev_education.csv',
+        '../../../../Data/Processed/pr_prev_education.csv',
+        header=0,
+        sep=apitep_core.CSV_SEPARATOR,
+        na_values=['', ' ', 'nan'])
+    pr_langs_certs = pd.read_csv(
+        '../../../../Data/Processed/pr_langs_certs.csv',
+        header=0,
+        sep=apitep_core.CSV_SEPARATOR,
+        na_values=['', ' ', 'nan'])
+    pr_training_courses = pd.read_csv(
+        '../../../../Data/Processed/pr_training_courses.csv',
         header=0,
         sep=apitep_core.CSV_SEPARATOR,
         na_values=['', ' ', 'nan'])
@@ -174,7 +186,7 @@ def main():
     global pr_work_history
 
     pr_work_history = pd.read_csv(
-        '../../../Data/Processed/pr_work_history.csv',
+        '../../../../Data/Processed/pr_work_history.csv',
         sep=apitep_core.CSV_SEPARATOR,
         header=0)
 
@@ -224,9 +236,14 @@ def main():
     abt_univ_degrees['EXP_PREVIA'] = abt_univ_degrees.apply(get_exp_prev, axis=1)
     abt_univ_degrees['FSUP_PREV'] = False
     abt_univ_degrees['FSUP_PREV'] = abt_univ_degrees.apply(get_eb, axis=1)
+    abt_univ_degrees['LANG_CERTS'] = False
+    abt_univ_degrees['LANG_CERTS'] = abt_univ_degrees['DNI'].apply(
+        lambda func: not (pr_langs_certs[pr_langs_certs['DNI'] == func]).empty)
+    abt_univ_degrees['TR_COURSE'] = abt_univ_degrees['DNI'].apply(
+        lambda func: not (pr_training_courses[pr_training_courses['DNI'] == func]).empty)
 
     abt_univ_degrees.to_csv(
-        '../../../Data/Integrated/abt_univ_degrees.csv',
+        '../../../../Data/Integrated/abt_univ_degrees.csv',
         header=True,
         sep=apitep_core.CSV_SEPARATOR)
     df.generate_profile(abt_univ_degrees, 'abt_univ_degrees')

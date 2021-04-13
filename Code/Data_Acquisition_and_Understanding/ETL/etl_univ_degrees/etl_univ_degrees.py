@@ -39,21 +39,6 @@ class UExETL(ETL):
     ACCESS_SUBTYPE_PROCESSED = "SUBTIPO_ACCESO"
     NUMBER_OF_STUDIES_PROCESSED = "NUM_ESTUDIOS"
 
-    COLUMNS_TO_RENAME = {
-        COMPLETION_COURSE_ORIGINAL: COMPLETION_COURSE_PROCESSED,
-        STUDY_TYPE_ORIGINAL: STUDY_TYPE_PROCESSED,
-        TITLE_ORIGINAL: TITLE_PROCESSED,
-        IDENTITY_NUMBER_ORIGINAL: IDENTITY_NUMBER_PROCESSED,
-        GENDER_ORIGINAL: GENDER_PROCESSED,
-        BIRTH_DATE_ORIGINAL: BIRTH_DATE_PROCESSED,
-        START_COURSE_ORIGINAL: START_COURSE_PROCESSED,
-        FAMILY_RESIDENCY_ORIGINAL: FAMILY_RESIDENCY_PROCESSED,
-        SECONDARY_SCHOOL_ORIGINAL: SECONDARY_SCHOOL_PROCESSED,
-        PRE_REGISTRATION_ORDER_ORIGINAL: PRE_REGISTRATION_ORDER_PROCESSED,
-        ACCESS_TYPE_ORIGINAL: ACCESS_TYPE_PROCESSED,
-        ACCESS_SUBTYPE_ORIGINAL: ACCESS_SUBTYPE_PROCESSED
-    }
-
     id_card_formatted = 0
     no_birth_date_records_dropped = 0
     birth_dates_formatted = 0
@@ -100,9 +85,6 @@ class UExETL(ETL):
             inplace=True)
         rows_after = len(self.input_df.index)
         self.duplicates_deleted = rows_before - rows_after
-
-        # rename columns
-        self.input_df.rename(columns=UExETL.COLUMNS_TO_RENAME, inplace=True)
 
         self.output_df = self.input_df
 
