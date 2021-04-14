@@ -25,16 +25,18 @@ class UExETL(ETL):
     ACCESS_SUBTYPE_PROCESSED = "SUBTIPO_ACCESO"
     NUMBER_OF_STUDIES_PROCESSED = "NUM_ESTUDIOS"
 
-    id_card_formatted = 0
-    no_birth_date_records_dropped = 0
-    birth_dates_formatted = 0
-    access_subtype_fixed = 0
-    id_cards_encrypted = 0
-    duplicates_deleted = 0
-    number_of_studies_updated = 0
-    columns_renamed = 0
+    changes = {
+        "id_card_formatted": 0,
+        "no_birth_date_records_dropped": 0,
+        "birth_dates_formatted": 0,
+        "access_subtype_fixed": 0,
+        "id_cards_encrypted": 0,
+        "duplicates_deleted": 0,
+        "number_of_studies_updated": 0,
+        "columns_renamed": 0
+    }
 
-    # @ETL.stopwatch
+    @ETL.stopwatch
     def process(self):
         """
         Process UEx data.
@@ -48,7 +50,7 @@ class UExETL(ETL):
         self.input_df[UExETL.BIRTH_DATE_PROCESSED].replace("", np.nan, inplace=True)
         self.input_df.dropna(subset=[UExETL.BIRTH_DATE_PROCESSED], inplace=True)
         rows_after = len(self.input_df.index)
-        self.no_birth_date_records_dropped = rows_before - rows_after
+        self.changes["no_birth_date_records_dropped"] = rows_before - rows_after
 
         # change birth date format (?)
         input_date_format = "%d/%m/%Y"
@@ -56,7 +58,7 @@ class UExETL(ETL):
             self.input_df[UExETL.BIRTH_DATE_PROCESSED].swifter.progress_bar(False).apply(
                 Date.change_format,
                 args=(input_date_format,))
-        self.birth_dates_formatted = self.replace_column(
+        self.changes["birth_dates_formatted"] = self.replace_column(
             source_column=UExETL.BIRTH_DATE_ORIGINAL_FORMATTED,
             destination_column=UExETL.BIRTH_DATE_PROCESSED
         )
@@ -70,7 +72,7 @@ class UExETL(ETL):
             keep="first",
             inplace=True)
         rows_after = len(self.input_df.index)
-        self.duplicates_deleted = rows_before - rows_after
+        self.changes["duplicates_deleted"] = rows_before - rows_after
 
         self.output_df = self.input_df
 
@@ -95,18 +97,6 @@ class UExETL(ETL):
             return "Otros (sin especificar)"
         else:
             return access_subtype
-
-    def log_changes(self):
-        """
-        Dump to log how many changes are made to UEx dataset.
-        """
-
-        log.info("Log dataset changes")
-        log.debug("log_changes()")
-
-        log.info(f"- rows with no birth date dropped: {self.no_birth_date_records_dropped}")
-        log.info(f"- birth dates formatted: {self.birth_dates_formatted}")
-        log.info(f"- duplicates deleted: {self.duplicates_deleted}")
 
 
 def main():
