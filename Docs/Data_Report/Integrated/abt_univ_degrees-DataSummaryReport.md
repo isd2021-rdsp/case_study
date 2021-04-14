@@ -22,16 +22,6 @@ Percentage of time worked (TTO_PCTO_DIAS_TRABAJADOS)
 - TR_COURSE
 - LANG_CERT
 
-## Variable ranking
-1. EDAD_FIN
-2. SEXO
-3. EXP_PREVIA
-4. TIPO_ACCESO
-5. TR_COURSE
-6. LANG_CERT
-7. FSUP_PREV
-8. MUNICIPIO_FAMILIAR
-
 ## Relationship between explanatory variables and target variable
 - EDAD_FIN: P-value of Spearman Test = 0.105
 - EXP_PREVIA: P-value of dunn test = 9.156438e-18

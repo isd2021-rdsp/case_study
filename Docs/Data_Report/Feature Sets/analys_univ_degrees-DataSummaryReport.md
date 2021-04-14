@@ -16,12 +16,6 @@ Percentage of time worked (TTO_PCTO_DIAS_TRABAJADOS)
 - TIPO_ACCESO
 - TR_COURSE
 
-## Variable ranking
-1. EDAD_FIN
-2. SEXO
-3. EXP_PREVIA
-4. TIPO_ACCESO
-5. TR_COURSE
 
 
 

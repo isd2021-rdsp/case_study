@@ -242,6 +242,12 @@ def main():
     abt_univ_degrees['TR_COURSE'] = abt_univ_degrees['DNI'].apply(
         lambda func: not (pr_training_courses[pr_training_courses['DNI'] == func]).empty)
 
+    final_columns = ['DNI', 'SEXO', 'TIPO_ACCESO',
+       'MUNICIPIO_FAMILIAR', 'TTO_PCTO_DIAS_TRABAJADOS',
+       'EDAD_FIN', 'EXP_PREVIA', 'FSUP_PREV', 'LANG_CERTS', 'TR_COURSE']
+
+    abt_univ_degrees = abt_univ_degrees[final_columns]
+
     abt_univ_degrees.to_csv(
         '../../../../Data/Integrated/abt_univ_degrees.csv',
         header=True,
