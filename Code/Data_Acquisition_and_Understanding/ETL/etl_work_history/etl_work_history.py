@@ -9,10 +9,6 @@ log = logging.getLogger(__name__)
 
 class WorkHistoryETL(ETL):
 
-    changes = {
-        "records_deleted": 0,
-    }
-
     @ETL.stopwatch
     def process(self):
         log.info("Process Work History data")

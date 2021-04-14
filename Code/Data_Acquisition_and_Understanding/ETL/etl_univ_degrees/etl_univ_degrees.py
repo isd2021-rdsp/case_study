@@ -25,17 +25,6 @@ class UExETL(ETL):
     ACCESS_SUBTYPE_PROCESSED = "SUBTIPO_ACCESO"
     NUMBER_OF_STUDIES_PROCESSED = "NUM_ESTUDIOS"
 
-    changes = {
-        "id_card_formatted": 0,
-        "no_birth_date_records_dropped": 0,
-        "birth_dates_formatted": 0,
-        "access_subtype_fixed": 0,
-        "id_cards_encrypted": 0,
-        "duplicates_deleted": 0,
-        "number_of_studies_updated": 0,
-        "columns_renamed": 0
-    }
-
     @ETL.stopwatch
     def process(self):
         """
